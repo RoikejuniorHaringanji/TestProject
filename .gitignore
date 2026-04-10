@@ -1,0 +1,16 @@
+bin/
+obj/
+*.db
+*.user
+*.vs/
+.vscode/
+**/bin/
+**/obj/
+.DS_Store
+*.log
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json

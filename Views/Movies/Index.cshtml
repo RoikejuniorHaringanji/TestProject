@@ -1,0 +1,70 @@
+@model IEnumerable<MVC.Models.Movie>
+@{
+    ViewData["Title"] = "My Movies";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Index" method="get" class="row g-3 mb-4">
+    <div class="col-md-5">
+        <label class="form-label">Search by title</label>
+        <input type="text" name="searchString" value="@ViewData["SearchString"]" class="form-control" placeholder="Enter movie title..." />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Year or newer</label>
+        <select name="releaseYear" class="form-select">
+            <option value="">All years</option>
+            @{
+                var selectedYear = ViewData["SelectedYear"]?.ToString();
+                var years = ViewData["ReleaseYear"] as List<int> ?? new List<int>();
+            }
+            @foreach (var year in years)
+            {
+                if (year.ToString() == selectedYear)
+                {
+                    <option value="@year" selected>@year</option>
+                }
+                else
+                {
+                    <option value="@year">@year</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-md-4 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary me-2">Filter</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+    </div>
+</form>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Add New Movie</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Release Date</th>
+            <th>Genre</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.ReleaseDate.ToString("yyyy-MM-dd")</td>
+            <td>@item.Genre</td>
+            <td>@item.Price.ToString("C")</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
